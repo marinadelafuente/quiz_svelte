@@ -22,7 +22,7 @@
   {#await quiz}
     Loading quiz...
   {:then data}
-    <button on:click={() => (quiz = getQuiz())}>Get new question</button>
+    <button on:click={() => (quiz = getQuiz())}>Get new questions</button>
     {#each data as question}
       <Question {question} />
     {/each}
