@@ -7,24 +7,33 @@
 
   // Variables
   let result: string;
+  let incorrectAnswers = question.incorrect_answers.map((answer) => {
+    return { answer, correct: false };
+  });
+  let answers = [
+    { answer: question.correct_answer, correct: true },
+    ...incorrectAnswers,
+  ];
+
+  const shuffleAnswers = (answers: { answer: string; correct: boolean }[]) => {
+    answers.sort(() => Math.random() - 0.5);
+  };
+
+  shuffleAnswers(answers);
 
   // Actions
-  const pickAnswer = (answer: string, correctAnswer: string) => {
-    return answer === correctAnswer
-      ? (result = "Correct")
-      : (result = "Incorrect");
-  };
 </script>
 
 <h3>
   {@html question.question}
 </h3>
 <div class="button-container">
-  {#each [question.correct_answer, ...question.incorrect_answers] as answer, index}
+  {#each answers as answer}
     <button
-      class={index === 0 && result === "Correct" && "correct-answer"}
-      on:click={() => pickAnswer(answer, question.correct_answer)}
-      >{@html answer}</button
+      class={result === "Correct" && "correct-answer"}
+      on:click={() =>
+        answer.correct ? (result = "Correct") : (result = "Incorrect")}
+      >{@html (answer.answer, answer.correct)}</button
     >
   {/each}
   {#if result}
